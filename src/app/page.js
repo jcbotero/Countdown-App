@@ -1,95 +1,87 @@
+'use client' // next por default trabaja desde el lado del servidor y asi no me deja usar usestate... por eso con esta linea trabajo desde el lado del client
+
+
 import Image from 'next/image'
 import styles from './page.module.css'
+import React from 'react';
+import { useEffect, useState, useRef } from 'react';
+
 
 export default function Home() {
+
+    const [seconds, setSeconds] = useState(41);  // casa usestate me va a dar un valor para hacer el conteo regresivo
+    const [ minutes, setMinutes] = useState(55);
+    const [ hours, setHours] = useState(23);
+    const [ days, setDays] = useState(8);
+
+    useEffect(() => {
+        seconds > 0 && setTimeout(() => setSeconds(seconds- 1), 1000); // esta es la clave, aqui la function setTimeout se dispara si los segundos son mayores a 0
+                                                                        // hace que el numero de segundos se reduzca 1 cada "mil milisegundos" (segundo)
+        if ( seconds == 0 ) {                                          
+          setMinutes ( minutes - 1 )
+          setSeconds (60) 
+        } // este if hace que cada que los segundos lleguen a 0... se me reduzca en 1 el conteo de minutos... y se reestablecen los segundos
+        
+        if ( minutes == 0 ) {                                         
+            setHours ( hours - 1 )
+            setMinutes (60)
+          } // este if hace que cada que los minutos lleguen a 0... se me reduzca en 1 el conteo de horas... y se reestablecen los minutos
+         
+          if ( hours == 0 ) {                                         
+            setDays ( days - 1 )
+            setHours (24)
+          } // este if hace que cada que las horas lleguen a 0... se me reduzca en 1 el conteo de dias... y se reestablecen las horas
+         
+
+      }, [seconds, minutes, hours, days]); // coloco todo dentro de un useeffect para que se atualicen los valores constantemente
+
+
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <div className={styles.body}>
+    <main className={styles.main} >
+        <section className={styles.header}>
+            <h1>WE´RE LAUNCHING SOON</h1>
+        </section>
+        <section className={styles.count} id={styles.count}>      
+             <div>  
+                    <article className={styles.bolaUp}> </article>  
+                    <article className={styles.bolaDown}> </article>                 
+                        <hr className={styles.hr}></hr> {/* esta tag hace que se dibuje una linea horizontal*/}
+                        <h2>{"0" + days}</h2>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+             </div>
+             <div>                   
+                  <article className={styles.bolaUp}> </article>  
+                  <article className={styles.bolaDown}> </article>                 
+                  <hr className={styles.hr}></hr> {/* esta tag hace que se dibuje una linea horizontal*/}
+                  <h2>{hours}</h2>
+             </div>
+             <div>  
+                  <article className={styles.bolaUp}> </article>  
+                    <article className={styles.bolaDown}> </article>                 
+                    <hr className={styles.hr}></hr> {/* esta tag hace que se dibuje una linea horizontal*/}
+                    <h2>{minutes}</h2>
+             </div>
+             <div>                  
+                  <article className={styles.bolaUp}> </article>  
+                  <article className={styles.bolaDown}> </article>                 
+                  <hr className={styles.hr}></hr> {/* esta tag hace que se dibuje una linea horizontal*/}
+                  <h2>{seconds}</h2>
+             </div>
+        </section>
+        <section className={styles.data} id={styles.data}>
+              <p>DAYS</p>
+              <p className={styles.data1}>HOURS</p>
+              <p className={styles.data1}>MINUTES</p>
+              <p>SECONDS</p>
+        </section>
+        <footer className={styles.footer}>
+              <img onClick={event =>  window.location.href='https://www.facebook.com/'}  src={"./icon-facebook.svg"} /> 
+              <img onClick={event =>  window.location.href='https://co.pinterest.com/'} src={"./icon-pinterest.svg"} /> 
+              <img onClick={event =>  window.location.href='https://www.instagram.com/'} src={"./icon-instagram.svg"} /> 
+        </footer> {/* asi con este onclick voy directamente a un link */}
     </main>
+    </div>
   )
 }
